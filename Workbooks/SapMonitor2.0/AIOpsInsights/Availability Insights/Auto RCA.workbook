@@ -142,7 +142,10 @@
             "multiSelect": true,
             "quote": "'",
             "delimiter": ",",
-            "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{AMSResource}/providerInstances/\",\"urlParams\":[{\"key\":\"api-version\",\"value\":\"2023-04-01\"}],\"batchDisabled\":true,\"transformers\":[{\"type\":\"jsonpath\",\"settings\":{\"tablePath\":\"$.value\",\"columns\":[]}}]}",
+            "query": "union isfuzzy=true (\r\nSapHana_SystemOverview_CL\r\n| extend sid = tostring(VALUE_s)\r\n| extend name = tostring(PROVIDER_INSTANCE_s)\r\n| where NAME_s == \"Instance ID\"\r\n| where sid == '{SID}'\r\n| distinct name\r\n),\r\n(\r\nSapNetweaver_GetSystemInstanceList_CL\r\n| where SID_s == '{SID}'\r\n| extend name = tostring(PROVIDER_INSTANCE_s)\r\n| distinct name\r\n)",
+            "crossComponentResources": [
+              "{Workspace}"
+            ],
             "isHiddenWhenLocked": true,
             "typeSettings": {
               "additionalResourceOptions": [
@@ -215,7 +218,7 @@
                 }
               ],
               "allowCustom": true
-            }
+                        }
           },
           {
             "id": "74f08427-265d-4db2-a6d9-82318f892762",
@@ -2045,5 +2048,5 @@
       "name": "vmInsights"
     }
   ],
-  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+    "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
 }
