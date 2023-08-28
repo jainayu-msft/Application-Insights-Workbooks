@@ -138,23 +138,9 @@
             "id": "90b0f708-b8cb-4689-968f-1dbb89ef9a6e",
             "version": "KqlParameterItem/1.0",
             "name": "Provider",
-            "type": 2,
-            "multiSelect": true,
-            "quote": "'",
-            "delimiter": ",",
-            "query": "union isfuzzy=true (\r\nSapHana_SystemOverview_CL\r\n| extend sid = tostring(VALUE_s)\r\n| extend name = tostring(PROVIDER_INSTANCE_s)\r\n| where NAME_s == \"Instance ID\"\r\n| where sid == '{SID}'\r\n| distinct name\r\n),\r\n(\r\nSapNetweaver_GetSystemInstanceList_CL\r\n| where SID_s == '{SID}'\r\n| extend name = tostring(PROVIDER_INSTANCE_s)\r\n| distinct name\r\n)",
-            "crossComponentResources": [
-              "{Workspace}"
-            ],
+            "type": 1,
             "isHiddenWhenLocked": true,
-            "typeSettings": {
-              "additionalResourceOptions": [
-                "value::all"
-              ],
-              "showDefault": false
-            },
-            "defaultValue": "value::all",
-            "queryType": 12
+            "defaultValue": "value::all"
           },
           {
             "id": "5f818549-c01f-4a9c-b804-d7cd18e67d60",
@@ -420,22 +406,6 @@
             },
             "customWidth": "80",
             "name": "vmValue"
-          },
-          {
-            "type": 1,
-            "content": {
-              "json": "Providers"
-            },
-            "customWidth": "20",
-            "name": "providerLabel"
-          },
-          {
-            "type": 1,
-            "content": {
-              "json": ": {Provider:label}"
-            },
-            "customWidth": "80",
-            "name": "providerValue"
           }
         ]
       },

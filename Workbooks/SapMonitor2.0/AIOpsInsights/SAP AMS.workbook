@@ -1374,8 +1374,8 @@
                                 },
                                 {
                                   "name": "Provider",
-                                  "source": "parameter",
-                                  "value": "providerInstance"
+                                  "source": "static",
+                                  "value": "{providerInstance}"
                                 },
                                 {
                                   "name": "TimeRange",
