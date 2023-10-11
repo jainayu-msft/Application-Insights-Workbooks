@@ -679,7 +679,7 @@
                   "name": "selTab",
                   "type": 11,
                   "isRequired": true,
-                  "query": "let options=datatable(value:string)[\"Availability\",\"Performance\"];\r\nunion (\r\n    options\r\n    | where (\"{nwExists}\"==\"true\" or \"{hanaExists}\"==\"true\") and value==\"Availability\"\r\n), (\r\n    options\r\n    | where \"{nwExists}\"==\"true\" and value==\"Performance\"\r\n)",
+                  "query": "let options=datatable(value:string)[\"Availability\",\"Performance\",\"Advanced\"];\r\nunion (\r\n    options\r\n    | where (\"{nwExists}\"==\"true\" or \"{hanaExists}\"==\"true\") and value==\"Availability\"\r\n), (\r\n    options\r\n    | where \"{nwExists}\"==\"true\" and value==\"Performance\"\r\n), (\r\n    options\r\n    | where value==\"Advanced\"\r\n)",
                   "crossComponentResources": [
                     "{workspace}"
                   ],
@@ -1529,10 +1529,17 @@
               ],
               "exportParameters": true
             },
-            "conditionalVisibility": {
-              "parameterName": "selSID",
-              "comparison": "isNotEqualTo"
-            },
+            "conditionalVisibilities": [
+              {
+                "parameterName": "selSID",
+                "comparison": "isNotEqualTo"
+              },
+              {
+                "parameterName": "selTab",
+                "comparison": "isNotEqualTo",
+                "value": "Advanced"
+              }
+            ],
             "name": "alertsPane"
           },
           {
@@ -2477,6 +2484,111 @@
               "value": "Performance"
             },
             "name": "performance"
+          },
+          {
+            "type": 12,
+            "content": {
+              "version": "NotebookGroup/1.0",
+              "groupType": "editable",
+              "items": [
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "anomalyData_CL \r\n| where SID_s == \"L15\"\r\n| project InsightsMessage_s, ConstituentInsights_s, Recommendataion_s, VM_s, TimeGenerated\r\n| extend Action = \"Investigate\"",
+                    "size": 3,
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces",
+                    "crossComponentResources": [
+                      "/subscriptions/ade68fe0-eb3e-4178-ab09-c5f06f7fb575/resourceGroups/rg-mario-copilot-poc/providers/Microsoft.OperationalInsights/workspaces/mocksapinsightsla"
+                    ],
+                    "visualization": "tiles",
+                    "tileSettings": {
+                      "titleContent": {
+                        "columnMatch": "InsightsMessage_s"
+                      },
+                      "subtitleContent": {
+                        "columnMatch": "TimeGenerated",
+                        "formatter": 6
+                      },
+                      "leftContent": {
+                        "columnMatch": "VM_s",
+                        "formatter": 1
+                      },
+                      "rightContent": {
+                        "columnMatch": "Action",
+                        "formatter": 2,
+                        "formatOptions": {
+                          "linkTarget": "WorkbookTemplate",
+                          "linkIsContextBlade": true,
+                          "workbookContext": {
+                            "componentIdSource": "workbook",
+                            "resourceIdsSource": "workbook",
+                            "templateIdSource": "static",
+                            "templateId": "Community-Workbooks/SapMonitor2.0/AIOpsInsights/Performance Insights",
+                            "typeSource": "workbook",
+                            "gallerySource": "workbook",
+                            "locationSource": "workbook",
+                            "workbookName": "Performance insights for {selSID}",
+                            "passSpecificParams": true,
+                            "templateParameters": [
+                              {
+                                "name": "TimeRange",
+                                "source": "parameter",
+                                "value": "timePeriod"
+                              },
+                              {
+                                "name": "SID",
+                                "source": "parameter",
+                                "value": "selSID"
+                              },
+                              {
+                                "name": "Provider",
+                                "source": "static",
+                                "value": "{providerInstance}"
+                              },
+                              {
+                                "name": "AlertTemplate",
+                                "source": "static",
+                                "value": "sapnetweaver-response-time"
+                              },
+                              {
+                                "name": "InsightsFired",
+                                "source": "column",
+                                "value": "TimeGenerated"
+                              },
+                              {
+                                "name": "InsightsMessage",
+                                "source": "column",
+                                "value": "InsightsMessage_s"
+                              }
+                            ],
+                            "viewerMode": false
+                          }
+                        }
+                      },
+                      "showBorder": true,
+                      "size": "auto"
+                    }
+                  },
+                  "customWidth": "30",
+                  "name": "query - 0"
+                }
+              ]
+            },
+            "conditionalVisibilities": [
+              {
+                "parameterName": "SID",
+                "comparison": "isNotEqualTo",
+                "value": "not set"
+              },
+              {
+                "parameterName": "selTab",
+                "comparison": "isEqualTo",
+                "value": "Advanced"
+              }
+            ],
+            "name": "AdvancedInsights"
           }
         ]
       },

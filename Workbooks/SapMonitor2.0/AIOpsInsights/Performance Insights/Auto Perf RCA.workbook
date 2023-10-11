@@ -81,6 +81,13 @@
             "id": "66894963-736c-4182-9eb1-7aa23ed31ba6"
           },
           {
+            "id": "7a7fda69-dd57-4b63-9944-8652662635a9",
+            "version": "KqlParameterItem/1.0",
+            "name": "InsightsFired",
+            "type": 1,
+            "isHiddenWhenLocked": true
+          },
+          {
             "id": "3c1299c9-2fdb-4d25-98ff-f7c84381057f",
             "version": "KqlParameterItem/1.0",
             "name": "TimeRange",
@@ -135,7 +142,7 @@
                 }
               ],
               "allowCustom": true
-            }
+                        }
           },
           {
             "id": "cac1f668-ad31-4771-a21e-ae61d0ebd43f",
@@ -203,6 +210,13 @@
             "name": "AlertName",
             "type": 1,
             "isHiddenWhenLocked": true
+          },
+          {
+            "id": "5eb0dc25-2ccb-4e0b-80e5-bf3c068b97f0",
+            "version": "KqlParameterItem/1.0",
+            "name": "InsightsMessage",
+            "type": 1,
+            "isHiddenWhenLocked": true
           }
         ],
         "style": "pills",
@@ -232,6 +246,54 @@
         "comparison": "isNotEqualTo"
       },
       "name": "mainOverview"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "anomalyData_CL \r\n| where SID_s == \"L15\"\r\n| where TimeGenerated == \"{InsightsFired}\"\r\n| where InsightsMessage_s == \"{InsightsMessage}\"\r\n| project InsightsMessage_s, ConstituentInsights_s, Recommendataion_s, VM_s, TimeGenerated",
+              "size": 4,
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "/subscriptions/ade68fe0-eb3e-4178-ab09-c5f06f7fb575/resourceGroups/rg-mario-copilot-poc/providers/Microsoft.OperationalInsights/workspaces/mocksapinsightsla"
+              ],
+              "visualization": "tiles",
+              "tileSettings": {
+                "titleContent": {
+                  "columnMatch": "InsightsMessage_s"
+                },
+                "subtitleContent": {
+                  "columnMatch": "TimeGenerated",
+                  "formatter": 6
+                },
+                "leftContent": {
+                  "columnMatch": "Recommendataion_s",
+                  "formatter": 1
+                },
+                "secondaryContent": {
+                  "columnMatch": "ConstituentInsights_s"
+                },
+                "showBorder": true,
+                "size": "full"
+              }
+            },
+            "name": "query - 0"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "InsightsFired",
+        "comparison": "isNotEqualTo",
+        "value": "not set"
+      },
+      "name": "AdvancedInsightsRecommendation"
     },
     {
       "type": 3,
